@@ -213,7 +213,58 @@ class Project(db.Model):
         return f'<Project {self.project_code}: {self.project_name}>'
 
 
-# ... keep existing code (ProjectMilestone class)
+class ProjectMilestone(db.Model):
+    __tablename__ = 'project_milestones'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
+    milestone_name = db.Column(db.String(200), nullable=False)
+    description = db.Column(Text)
+    milestone_type = db.Column(db.String(50))  # planning, development, testing, deployment, review, delivery
+    planned_date = db.Column(db.Date)
+    baseline_date = db.Column(db.Date)
+    actual_date = db.Column(db.Date)
+    status = db.Column(db.String(50), default='not_started')  # not_started, planned, in_progress, completed, delayed, at_risk, cancelled
+    completion_percentage = db.Column(db.Numeric(5, 2), default=0.0)
+    priority = db.Column(db.String(20), default='medium')  # low, medium, high, critical
+    dependencies = db.Column(JSON)  # Array of milestone dependencies
+    deliverables = db.Column(Text)
+    acceptance_criteria = db.Column(Text)
+    owner_id = db.Column(db.Integer)
+    estimated_effort_hours = db.Column(db.Integer)
+    actual_effort_hours = db.Column(db.Integer)
+    budget_allocated = db.Column(db.Numeric(12, 2))
+    budget_consumed = db.Column(db.Numeric(12, 2))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    project = db.relationship('Project', back_populates='milestones')
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'project_id': self.project_id,
+            'milestone_name': self.milestone_name,
+            'description': self.description,
+            'milestone_type': self.milestone_type,
+            'planned_date': self.planned_date.isoformat() if self.planned_date else None,
+            'baseline_date': self.baseline_date.isoformat() if self.baseline_date else None,
+            'actual_date': self.actual_date.isoformat() if self.actual_date else None,
+            'status': self.status,
+            'completion_percentage': float(self.completion_percentage) if self.completion_percentage else 0.0,
+            'priority': self.priority,
+            'dependencies': self.dependencies,
+            'deliverables': self.deliverables,
+            'acceptance_criteria': self.acceptance_criteria,
+            'owner_id': self.owner_id,
+            'estimated_effort_hours': self.estimated_effort_hours,
+            'actual_effort_hours': self.actual_effort_hours,
+            'budget_allocated': float(self.budget_allocated) if self.budget_allocated else None,
+            'budget_consumed': float(self.budget_consumed) if self.budget_consumed else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
 
 
 class ProjectRisk(db.Model):
