@@ -1,0 +1,37 @@
+
+{
+  "users": [
+    {
+      "id": "user_001",
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@zapcom.com",
+      "role": "Human Resources",
+      "department": "HR",
+      "avatar": null
+    },
+    {
+      "id": "user_002", 
+      "name": "John Smith",
+      "email": "john.smith@zapcom.com",
+      "role": "Manager",
+      "department": "Engineering",
+      "avatar": null
+    },
+    {
+      "id": "user_003",
+      "name": "Emily Davis", 
+      "email": "emily.davis@zapcom.com",
+      "role": "Leadership",
+      "department": "Executive",
+      "avatar": null
+    },
+    {
+      "id": "user_004",
+      "name": "Michael Brown",
+      "email": "michael.brown@zapcom.com", 
+      "role": "PM",
+      "department": "Project Management",
+      "avatar": null
+    }
+  ]
+}
