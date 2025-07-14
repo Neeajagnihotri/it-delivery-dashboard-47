@@ -1,5 +1,8 @@
 // API service for backend integration
-const API_BASE_URL = 'http://localhost:5000/api';
+// TODO: Replace with your ngrok URL when using Lovable preview
+const API_BASE_URL = process.env.NODE_ENV === 'development' && window.location.hostname === 'localhost' 
+  ? 'http://localhost:5000/api' 
+  : 'https://your-ngrok-url.ngrok.io/api'; // Replace with your actual ngrok URL
 
 import type { 
   KPISummaryResponse, 
