@@ -18,6 +18,9 @@ class ApiService {
     const url = `${API_BASE_URL}${endpoint}`;
     const token = localStorage.getItem('authToken');
     
+    console.log(`Making API request to: ${url}`);
+    console.log('Request options:', options);
+    
     try {
       const response = await fetch(url, {
         headers: {
@@ -27,6 +30,9 @@ class ApiService {
         },
         ...options,
       });
+
+      console.log(`Response status: ${response.status}`);
+      console.log(`Response ok: ${response.ok}`);
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -46,11 +52,20 @@ class ApiService {
       }
 
       const data = await response.json();
+      console.log('Response data:', data);
       return data.data || data;
     } catch (error) {
+      console.error('API request error:', error);
+      
       if (error instanceof TypeError && error.message.includes('fetch')) {
         throw new Error('Unable to connect to server. Please ensure the backend is running on http://localhost:5000');
       }
+      
+      // Check if it's a CORS error
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        throw new Error('Connection blocked by CORS policy. The Lovable preview cannot connect to localhost. Please deploy your backend or use a service like ngrok to expose it.');
+      }
+      
       throw error;
     }
   }
